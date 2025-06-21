@@ -1,0 +1,130 @@
+<!-- views/aft_category_views.xml -->
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Transferencias de Activos Fijos -->
+        <record id="aft.view_aft_transfer_menu" model="ir.ui.view">
+            <field name="name">aft.transfer.menu</field>
+            <field name="model">ir.ui.menu</field>
+            <field name="arch" type="xml">
+                <menuitem id="aft.menu_aft_transfer_root" name="Transferencias AFT"/>
+            </field>
+        </record>
+        <record id="aft.menu_aft_transfer" model="ir.ui.menu">
+            <field name="name">Transferencias de Activos Fijos</field>
+            <field name="model">aft.asset.transfer</field>
+            <field name="parent_id" ref="aft.menu_aft_root"/>
+            <field name="sequence" eval="30"/>
+            <field name="action" ref="aft.action_aft_transfer"/>
+            <field name="groups_id" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+        <!-- Vista de árbol para transferencias -->
+        <record id="view_aft_transfer_tree" model="ir.ui.view">
+            <field name="name">aft.transfer.tree</field>
+            <field name="model">aft.transfer</field>
+            <field name="arch" type="xml">
+                <tree string="Transferencias de Activos Fijos">
+                    <field name="name"/>
+                    <field name="date"/>
+                    <field name="from_location_id"/>
+                    <field name="to_location_id"/>
+                </tree>
+            </field>
+        </record>
+        <!-- Vista de formulario para transferencias -->
+        <record id="view_aft_transfer_form" model="ir.ui.view">
+            <field name="name">aft.transfer.form</field>
+            <field name="model">aft.transfer</field>
+            <field name="arch" type="xml">
+                <form string="Transferencia de Activo Fijo">
+                    <sheet>
+                        <group>
+                            <group>
+                                <label for="name" string="Descripción"/>
+                                <div class='oe_edit_only'>
+                                    <h1>
+                                        <field name='name' placeholder='Descripción de la transferencia'/>
+                                    </h1>
+                                </div>
+                            </group>
+                            <group>
+                                <label for='date' string='Fecha'/>
+                                <div class='oe_edit_only'>
+                                    <field name='date' widget='datetime'/>
+                                </div>
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                                <label for='from_location_id' string='Ubicación de Origen'/>
+                                <div class='oe_edit_only'>
+                                    <field name='from_location_id' options="{'no_create': True}"/>
+                                </div>
+                            </group>
+                            <group>
+                                <label for='to_location_id' string='Ubicación de Destino'/>
+                                <div class='oe_edit_only'>
+                                    <field name='to_location_id' options="{'no_create': True}"/>
+                                </div>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Activos">
+                                <field name="asset_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                            </page>
+                            <page string="Notas">
+                                <field name="notes" widget="text"/>
+                            </page>
+                        </notebook>
+                        <footer>
+                            <button string="Guardar" type="object" name="action_save_transfer" class="btn-primary"/>
+                            <button string="Cancelar" type="object" name="action_cancel_transfer" class="btn-secondary"/>
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <!-- Acción para transferencias -->
+        <record id="action_aft_transfer" model="ir.actions.act_window">
+            <field name="name">Transferencias de Activos Fijos</field>
+            <field name="res_model">aft.asset.transfer</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_aft_transfer_tree"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Crea tu primera transferencia de activo fijo.
+                </p>
+            </field>
+            <field name="context">{}</field>
+            <field name="domain">[]</field>
+            <field name="search_view_id" ref="aft.view_aft_transfer_search"/>
+            <field name="groups_id" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+        <!-- Vista de búsqueda para transferencias -->
+        <record id="view_aft_transfer_search" model="ir.ui.view">
+            <field name="name">aft.transfer.search</field>
+            <field name="model">aft.asset.transfer</field>
+            <field name="arch" type="xml">
+                <search string="Buscar Transferencias">
+                    <field name="name"/>
+                    <field name="date"/>
+                    <filter string="Hoy" domain="[('date', '=', context_today())]"/>
+                    <filter string="Esta Semana" domain="[('date', '>=', context_today() - timedelta(days=7))]"/>
+                    <filter string="Esta Mes" domain="[('date', '>=', context_today() - timedelta(days=30))]"/>
+                </search>
+            </field>
+        </record>
+        <!-- Permisos de acceso para transferencias -->
+        <!--
+        <record id="aft.model_aft_asset_transfer_access" model="ir.model.access">
+            <field name="name">aft.asset.transfer.access</field>
+            <field name="model_id" ref="aft.model_aft_asset_transfer"/>
+            <field name="group_id" ref="base.group_user"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="0"/>
+        </record>
+        -->
+    </data>
+</odoo

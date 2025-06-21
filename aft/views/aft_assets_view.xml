@@ -1,0 +1,115 @@
+<!-- views/aft_asset_views.xml -->
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <!-- Vista de árbol para Activos Fijos Tangibles -->
+        <record id="view_aft_asset_tree" model="ir.ui.view">
+            <field name="name">aft.asset.tree</field>
+            <field name="model">aft.asset</field>
+            <field name="arch" type="xml">
+                <tree string="Activos Fijos Tangibles">
+                    <field name="name"/>
+                    <field name="inventory_number" string="Núm. Inventario"/>
+                    <field name="category_id" string="Categoría"/>
+                    <field name="area_id" string="Área"/>
+                    <field name="purchase_date" string="Fecha de Compra"/>
+                    <field name="current_value" string="Valor Actual"/>
+                </tree>
+            </field>
+        </record>
+        
+
+        <record id="view_aft_asset_form" model="ir.ui.view">
+            <field name="name">aft.asset.form</field>
+            <field name="model">aft.asset</field>
+            <field name="arch" type="xml">
+                <form string="Activo Fijo Tangible">
+                    <header>
+                        <button name="action_open_transfers" 
+                        type="object"
+                        string="Historial de Traslados"
+                        class="oe_stat_button"
+                        icon="fa-exchange"/>
+                        <button name="open_transfer_wizard"
+                        type="object"
+                        string="Trasladar entre Áreas"
+                        class="oe_highlight"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" required="1"/>
+                                <field name="inventory_number" readonly="1"/>
+                                <field name="category_id" required="1"/>
+                                <field name="custom_depreciation_rate"
+                               attrs="{'invisible': [('custom_depreciation_rate', '=', 0)]}"
+                               help="Sobreescribe la tasa de la categoría si es necesario"/>
+                            </group>
+                            <group>
+                                <field name="area_id" required="1" widget="many2one"/>
+                                <field name="purchase_date"/>
+                                <field name="purchase_value"/>
+                                <field name="current_value"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <!-- Pestaña de Información Básica -->
+                            <page string="Información">
+                                <group>
+                                    <field name="description"/>
+                                    <field name="serial_number"/>
+                                    <field name="model"/>
+                                    <field name="manufacturer"/>
+                                </group>
+                            </page>
+                            <!-- Pestaña de Depreciación (Requerimiento #4) -->
+                            <page string="Depreciación">
+                                <field name="depreciation_line_ids" 
+                               context="{'tree_view_ref': 'aft_cuba.view_aft_depreciation_line_tree'}">
+                                    <tree decoration-success="state == 'posted'"
+                                  decoration-warning="state == 'future'">
+                                        <field name="date"/>
+                                        <field name="amount" readonly="1"/>
+                                        <field name="state" invisible="1"/>
+                                        <filter name="posted" string="Registradas" domain="[('state','=','posted')]"/>
+                                        <filter name="future" string="Futuras" domain="[('state','=','future')]"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <!-- Pestaña de Movimientos -->
+                            <page string="Movimientos">
+                                <!-- Se agregarán los movimientos (compras, altas, bajas) aquí -->
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <!-- Acción para abrir la vista de Activos Fijos Tangibles -->
+        <record id="action_aft_asset" model="ir.actions.act_window">
+            <field name="name">Activos Fijos Tangibles</field>
+            <field name="res_model">aft.asset</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_aft_asset_tree"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Aquí puedes ver y gestionar los activos fijos tangibles de la empresa.
+                </p>
+            </field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+        <!-- Menú principal -->
+        <menuitem id="menu_aft_root" name="Activos Fijos" sequence="100"/>
+        <!-- Menú para Activos Fijos Tangibles -->
+        <menuitem id="menu_aft_asset" 
+                  name="Activos Fijos Tangibles" 
+                  action="action_aft_asset" 
+                  parent="menu_aft_root"/>
+
+
+
+
+    </data>
+</odoo>
