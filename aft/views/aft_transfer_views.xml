@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Vista de lista para transferencias -->
+        <record id="view_aft_transfer_tree" model="ir.ui.view">
+            <field name="name">aft.transfer.tree</field>
+            <field name="model">aft.transfer</field>
+            <field name="arch" type="xml">
+                <tree string="Traslados de Activos" decoration-success="state=='confirmed'" decoration-info="state=='draft'">
+                    <field name="date" string="Fecha"/>
+                    <field name="asset_id" string="Activo"/>
+                    <field name="from_area_id" string="Área Origen"/>
+                    <field name="to_area_id" string="Área Destino"/>
+                    <field name="user_id" string="Responsable"/>
+                    <field name="state" string="Estado" widget="badge"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Vista de formulario para transferencias -->
+        <record id="view_aft_transfer_form" model="ir.ui.view">
+            <field name="name">aft.transfer.form</field>
+            <field name="model">aft.transfer</field>
+            <field name="arch" type="xml">
+                <form string="Traslado de Activo">
+                    <header>
+                        <button name="action_confirm" 
+                                string="Confirmar Traslado" 
+                                type="object" 
+                                class="oe_highlight" 
+                                states="draft"
+                                confirm="¿Está seguro de realizar este traslado?"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirmed"/>
+                    </header>
+                    
+                    <sheet>
+                        <!-- ✅ AGREGAR ALERTA PARA ACTIVOS SIN ÁREA -->
+                        <div class="alert alert-warning" role="alert" attrs="{'invisible': [('from_area_id', '!=', False)]}">
+                            <strong>⚠️ Atención:</strong> El activo seleccionado no tiene área asignada. 
+                            Debe asignarle un área antes de poder trasladarlo.
+                        </div>
+                        
+                        <group>
+                            <group>
+                                <field name="asset_id" 
+                                       required="1" 
+                                       options="{'no_create': True}"
+                                       attrs="{'readonly': [('state', '=', 'confirmed')]}"/>
+                                <field name="from_area_id" 
+                                       readonly="1"
+                                       attrs="{'required': [('state', '=', 'confirmed')]}"/>
+                            </group>
+                            <group>
+                                <field name="to_area_id" 
+                                       required="1" 
+                                       options="{'no_create': True}"
+                                       attrs="{'readonly': [('state', '=', 'confirmed')]}"/>
+                                <field name="date" 
+                                       attrs="{'readonly': [('state', '=', 'confirmed')]}"/>
+                                <field name="user_id" 
+                                       attrs="{'readonly': [('state', '=', 'confirmed')]}"/>
+                            </group>
+                        </group>
+                        
+                        <group string="Observaciones">
+                            <field name="notes" 
+                                   placeholder="Ingrese observaciones sobre el traslado..."
+                                   attrs="{'readonly': [('state', '=', 'confirmed')]}"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Vista de búsqueda -->
+        <record id="view_aft_transfer_search" model="ir.ui.view">
+            <field name="name">aft.transfer.search</field>
+            <field name="model">aft.transfer</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="asset_id"/>
+                    <field name="from_area_id"/>
+                    <field name="to_area_id"/>
+                    <field name="user_id"/>
+                    <filter name="draft" string="Borradores" domain="[('state','=','draft')]"/>
+                    <filter name="confirmed" string="Confirmados" domain="[('state','=','confirmed')]"/>
+                    <separator/>
+                    <filter name="today" string="Hoy" domain="[('date','&gt;=',datetime.datetime.combine(context_today(),datetime.time(0,0,0))), ('date','&lt;=',datetime.datetime.combine(context_today(),datetime.time(23,59,59)))]"/>
+                    <filter name="this_week" string="Esta Semana" domain="[('date','&gt;=', (context_today() - datetime.timedelta(days=context_today().weekday())).strftime('%Y-%m-%d'))]"/>
+                    <group expand="0" string="Agrupar por">
+                        <filter name="group_area_origen" string="Área Origen" context="{'group_by': 'from_area_id'}"/>
+                        <filter name="group_area_destino" string="Área Destino" context="{'group_by': 'to_area_id'}"/>
+                        <filter name="group_usuario" string="Usuario" context="{'group_by': 'user_id'}"/>
+                        <filter name="group_estado" string="Estado" context="{'group_by': 'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Acción para transferencias -->
+        <record id="action_aft_transfer" model="ir.actions.act_window">
+            <field name="name">Traslados de Activos</field>
+            <field name="res_model">aft.transfer</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_aft_transfer_search"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    ¡Crear tu primer traslado de activo!
+                </p>
+                <p>
+                    <strong>Para crear un traslado necesitas:</strong><br/>
+                    • Al menos un activo con área asignada<br/>
+                    • Al menos dos áreas configuradas<br/>
+                    • Seleccionar origen y destino diferentes
+                </p>
+                <p>
+                    <strong>Pasos:</strong><br/>
+                    1. Ve a <strong>AFT → Activos</strong> y asigna un área a tu activo<br/>
+                    2. Regresa aquí para crear el traslado
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

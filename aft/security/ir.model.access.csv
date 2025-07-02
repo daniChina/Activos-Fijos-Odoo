@@ -1,7 +1,8 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_aft_assets,aft.assets,model_aft_assets,,1,1,1,1
-access_aft_area,aft.area,model_aft_area,,1,1,1,1
-access_aft_category,aft.category,model_aft_category,,1,1,1,1
-access_aft_depreciation,aft.depreciation,model_aft_depreciation,,1,1,1,1
-access_aft_transfer,aft.transfer,model_aft_transfer,,1,1,1,1
-access_aft_report,aft.report,model_aft_report,,1,1,1,1
+access_aft_asset,aft.asset,model_aft_asset,base.group_user,1,1,1,1
+access_aft_area,aft.area,model_aft_area,base.group_user,1,1,1,1
+access_aft_category,aft.category,model_aft_category,base.group_user,1,1,1,1
+access_aft_transfer,aft.transfer,model_aft_transfer,base.group_user,1,1,1,1
+access_aft_depreciation_line,aft.depreciation.line,model_aft_depreciation_line,base.group_user,1,1,1,1
+
+

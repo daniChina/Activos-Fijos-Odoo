@@ -1,48 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
   <data>
-    
-    <!-- Menú principal -->
-    <menuitem id="menu_aft_root" name="Activos Fijos" sequence="10"/>
+    <!-- explicit list view definition -->
+    <!--
+    <record model="ir.ui.view" id="aft.list">
+      <field name="name">aft list</field>
+      <field name="model">aft.aft</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+-->
 
-    <!-- Menú y acción: Activos -->
-    <record id="action_aft_assets" model="ir.actions.act_window">
-      <field name="name">Activos</field>
-      <field name="res_model">aft.assets</field>
+    <!-- actions opening views on models -->
+    <!--
+    <record model="ir.actions.act_window" id="aft.action_window">
+      <field name="name">aft window</field>
+      <field name="res_model">aft.aft</field>
       <field name="view_mode">tree,form</field>
     </record>
-    <menuitem id="menu_aft_assets" name="Activos" parent="menu_aft_root" action="action_aft_assets" sequence="1"/>
+-->
 
-    <!-- Menú y acción: Áreas -->
-    <record id="action_aft_area" model="ir.actions.act_window">
-      <field name="name">Áreas</field>
-      <field name="res_model">aft.area</field>
-      <field name="view_mode">tree,form</field>
+    <!-- server action to the one above -->
+    <!--
+    <record model="ir.actions.server" id="aft.action_server">
+      <field name="name">aft server</field>
+      <field name="model_id" ref="model_aft_aft"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
     </record>
-    <menuitem id="menu_aft_area" name="Áreas" parent="menu_aft_root" action="action_aft_area" sequence="2"/>
+-->
 
-    <!-- Menú y acción: Categorías -->
-    <record id="action_aft_category" model="ir.actions.act_window">
-      <field name="name">Categorías</field>
-      <field name="res_model">aft.category</field>
-      <field name="view_mode">tree,form</field>
-    </record>
-    <menuitem id="menu_aft_category" name="Categorías" parent="menu_aft_root" action="action_aft_category" sequence="3"/>
-
-    <!-- Menú y acción: Transferencias -->
-    <record id="action_aft_transfer" model="ir.actions.act_window">
-      <field name="name">Transferencias</field>
-      <field name="res_model">aft.transfer</field>
-      <field name="view_mode">tree,form</field>
-    </record>
-    <menuitem id="menu_aft_transfer" name="Transferencias" parent="menu_aft_root" action="action_aft_transfer" sequence="4"/>
-
-    <!-- Menú y acción: Reportes -->
-    <record id="action_aft_report" model="ir.actions.act_window">
-      <field name="name">Reportes</field>
-      <field name="res_model">aft.report</field>
-      <field name="view_mode">tree,form</field>
-    </record>
-    <menuitem id="menu_aft_report" name="Reportes" parent="menu_aft_root" action="action_aft_report" sequence="5"/>
-
+    <!-- Top menu item -->
+    <!--
+    <menuitem name="aft" id="aft.menu_root"/>
+-->
+    <!-- menu categories -->
+    <!--
+    <menuitem name="Menu 1" id="aft.menu_1" parent="aft.menu_root"/>
+    <menuitem name="Menu 2" id="aft.menu_2" parent="aft.menu_root"/>
+-->
+    <!-- actions -->
+    <!--
+    <menuitem name="List" id="aft.menu_1_list" parent="aft.menu_1" action="aft.action_window"/>
+    <menuitem name="Server to list" id="aft" parent="aft.menu_2" action="aft.action_server"/>
+-->
   </data>
 </odoo>

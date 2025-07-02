@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Vista de lista de áreas -->
+        <record id="view_aft_area_tree" model="ir.ui.view">
+            <field name="name">aft.area.tree</field>
+            <field name="model">aft.area</field>
+            <field name="arch" type="xml">
+                <tree string="Áreas">
+                    <field name="name" string="Nombre"/>
+                    <!-- ✅ CORREGIR: usar area_type en lugar de type -->
+                    <field name="area_type" string="Tipo de Área"/>
+                    <field name="expense_account_id" string="Cuenta de Gastos"/>
+                    <field name="active" widget="boolean_toggle"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Vista de formulario de áreas -->
+        <record id="view_aft_area_form" model="ir.ui.view">
+            <field name="name">aft.area.form</field>
+            <field name="model">aft.area</field>
+            <field name="arch" type="xml">
+                <form string="Área">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" string="Nombre"/>
+                                <!-- ✅ CORREGIR: usar area_type en lugar de type -->
+                                <field name="area_type" string="Tipo de Área"/>
+                                <field name="active" string="Activo" widget="boolean_toggle"/>
+                            </group>
+                            <group>
+                                <field name="expense_account_id" options="{'no_create_edit': True}"/>
+                            </group>
+                        </group>
+
+                        <group string="Descripción">
+                            <field name="description" placeholder="Descripción del área..."/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Acción para áreas -->
+        <record id="action_aft_area" model="ir.actions.act_window">        
+            <field name="name">Áreas de Activos</field>
+            <field name="res_model">aft.area</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+    </data>
+</odoo>

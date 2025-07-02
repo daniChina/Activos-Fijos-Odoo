@@ -1,6 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>
-<!--
+  <data>
+    <!--
         <template id="listing">
           <ul>
             <li t-foreach="objects" t-as="object">
@@ -20,7 +21,5 @@
           </dl>
         </template>
 -->
-
-
-    </data>
+  </data>
 </odoo>

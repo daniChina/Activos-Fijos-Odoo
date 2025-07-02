@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Vista de lista de categorías -->
+        <record id="view_aft_category_tree" model="ir.ui.view">
+            <field name="name">aft.category.tree</field>
+            <field name="model">aft.category</field>
+            <field name="arch" type="xml">
+                <tree string="Categorías de Activos">
+                    <field name="name"/>
+                    <field name="depreciation_rate" string="Tasa %" widget="percentage"/>
+                    <field name="fixed_asset_account_id"/>
+                    <field name="accumulated_depreciation_account_id"/>
+                    <field name="active" widget="boolean_toggle"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Vista de formulario de categorías -->
+        <record id="view_aft_category_form" model="ir.ui.view">
+            <field name="name">aft.category.form</field>
+            <field name="model">aft.category</field>
+            <field name="arch" type="xml">
+                <form string="Categoría de Activo">
+                    <sheet>
+                        <group>
+                            <group string="Información General">
+                                <field name="name" placeholder="Ej: Equipos de Cómputo"/>
+                                <field name="depreciation_rate" widget="percentage"/>
+                                <field name="active"/>
+                            </group>
+                            <group string="Cuentas Contables">
+                                <field name="fixed_asset_account_id" 
+                                       placeholder="Seleccionar cuenta de activo fijo"
+                                       context="{'search_default_type': 'asset'}"
+                                       options="{'no_create': True}"/>
+                                <field name="accumulated_depreciation_account_id" 
+                                       placeholder="Seleccionar cuenta de depreciación acumulada"
+                                       context="{'search_default_type': 'asset'}"
+                                       options="{'no_create': True}"/>
+                            </group>
+                        </group>
+                        
+                        <group string="Descripción">
+                            <field name="description" placeholder="Descripción de la categoría..."/>
+                        </group>
+                         <!-- ✅ INFORMACIÓN DE AYUDA -->
+                        <group string="Información Contable">
+                            <p class="text-muted">
+                                <strong>Flujo contable de activos fijos:</strong><br/><br/>
+                                
+                                <strong>1. Al comprar/dar de alta un activo:</strong><br/>
+                                DEBE: <field name="fixed_asset_account_id" readonly="1" nolabel="1" class="oe_inline"/> (valor del activo)<br/>
+                                HABER: Proveedores / Banco (forma de pago)<br/><br/>
+                                
+                                <strong>2. Al depreciar mensualmente:</strong><br/>
+                                DEBE: Gastos por Depreciación (cuenta del área)<br/>
+                                HABER: <field name="accumulated_depreciation_account_id" readonly="1" nolabel="1" class="oe_inline"/> (depreciación)<br/><br/>
+
+                                
+                                <strong>3. En el Balance General:</strong><br/>
+                                Activos Fijos: Valor original menos depreciación acumulada
+                            </p>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+       <!-- Acción para categorías -->
+        <record id="action_aft_category" model="ir.actions.act_window">
+            <field name="name">Categorías de Activos</field>
+            <field name="res_model">aft.category</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    ¡Crear tu primera categoría de activos!
+                </p>
+                <p>
+                    Las categorías definen cómo se contabilizarán los activos fijos:
+                </p>
+                <ul>
+                  <li><strong>Tasa de depreciación:</strong> Porcentaje anual</li>
+                    <li><strong>Cuenta de activo fijo:</strong> Donde se registra el valor</li>
+                    <li><strong>Cuenta de depreciación acumulada:</strong> Donde se acumula la depreciación</li>
+                </ul>
+                <p>
+                    <strong>Nota:</strong> Las cuentas contables deben estar configuradas previamente en 
+                    <em>Contabilidad → Configuración → Plan Contable</em>
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

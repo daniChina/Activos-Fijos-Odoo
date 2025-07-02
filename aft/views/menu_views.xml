@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Menú principal AFT -->
+        <menuitem id="menu_aft_main" name="AFT" sequence="10"/>
+        
+        <!-- Submenús -->
+        <menuitem id="menu_aft_assets" name="Activos Fijos" parent="menu_aft_main" action="action_aft_asset" sequence="10"/>
+        <menuitem id="menu_aft_transfers" name="Traslados" parent="menu_aft_main" action="action_aft_transfer" sequence="20"/>
+        
+        <!-- Configuración -->
+        <menuitem id="menu_aft_config" name="Configuración" parent="menu_aft_main" sequence="90"/>
+        <menuitem id="menu_aft_categories" name="Categorías" parent="menu_aft_config" action="action_aft_category" sequence="10"/>
+        <menuitem id="menu_aft_areas" name="Áreas" parent="menu_aft_config" action="action_aft_area" sequence="20"/>
+    </data>
+</odoo>
+
+
+<!--
+
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_aft_main" name="Activos Fijos" sequence="10"/>
+
+    <menuitem id="menu_aft_assets" name="Activos Fijos" parent="menu_aft_main" action="action_aft_asset" sequence="10"/>
+
+    <menuitem id="menu_aft_areas" name="Áreas" parent="menu_aft_main" action="action_aft_area" sequence="20"/>
+
+    <menuitem id="menu_aft_transfers" name="Traslados" parent="menu_aft_main" action="action_aft_transfer" sequence="30"/>
+
+    <menuitem id="menu_aft_categories" name="Categorías" parent="menu_aft_main" action="action_aft_category" sequence="40"/>
+</odoo>
+-->

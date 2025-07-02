@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Cuentas de ejemplo para activos fijos -->
+        <record id="account_fixed_assets_equipment" model="account.account">
+            <field name="code">1511</field>
+            <field name="name">Equipos de Cómputo</field>
+            <field name="user_type_id" ref="account.data_account_type_fixed_assets"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        
+        <record id="account_accumulated_depreciation_equipment" model="account.account">
+            <field name="code">1519</field>
+            <field name="name">Depreciación Acumulada - Equipos de Cómputo</field>
+            <field name="user_type_id" ref="account.data_account_type_fixed_assets"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        
+        <record id="account_fixed_assets_furniture" model="account.account">
+            <field name="code">1521</field>
+            <field name="name">Muebles y Enseres</field>
+            <field name="user_type_id" ref="account.data_account_type_fixed_assets"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        
+        <record id="account_accumulated_depreciation_furniture" model="account.account">
+            <field name="code">1529</field>
+            <field name="name">Depreciación Acumulada - Muebles y Enseres</field>
+            <field name="user_type_id" ref="account.data_account_type_fixed_assets"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+    </data>
+</odoo>
